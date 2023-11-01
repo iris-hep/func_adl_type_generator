@@ -14,7 +14,7 @@ on:
       func_adl_types_atlas_version:
         description: "func_adl_types_atlas github tag"
         required: true
-        default: "v1.0.0b3"
+        default: "v1.0.0b4"
 
 jobs:
   release:
@@ -53,7 +53,7 @@ jobs:
           key: type-tyaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
         run: |
-          atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
+          atlas_release_type_builder -vv build --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
           ls -R cache
       - name: Save Python Package
         uses: actions/upload-artifact@v2
