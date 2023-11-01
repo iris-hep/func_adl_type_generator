@@ -52,10 +52,8 @@ jobs:
           path: cache/yaml
           key: type-tyaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
-        env:
-          RELEASE_VERSION: ${{ github.event.inputs.release_version }}
         run: |
-          atlas_release_type_builder build $RELEASE_VERSION --type_json ./cache/yaml --type_package ./cache/package
+          atlas_release_type_builder build --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
           ls -R cache
       - name: Save Python Package
         uses: actions/upload-artifact@v2
