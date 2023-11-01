@@ -44,7 +44,7 @@ jobs:
       - name: Install dependencies
         run: |
           pwd
-          ls -R
+          ls -R | % {$_.Name}
           cd func_adl_servicex_type_generator
           pip install -e .
       - name: Cache Type YAML Files
