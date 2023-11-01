@@ -24,7 +24,9 @@ def run_command(cmd: str | List[str]):
     if not isinstance(cmd, list):
         cmd = [cmd]
 
-    command_line = "powershell -c " + ";".join(cmd)
+    command_line = (
+        "powershell -c " + ";".join(cmd) if len(cmd) > 1 else f"powershell {cmd[0]}"
+    )
     logging.debug(f"Running command: {command_line}")
 
     try:
@@ -338,6 +340,8 @@ def main():
     logging.basicConfig()
     if args.verbose:
         logging.getLogger().setLevel(logging.INFO)
+        if int(args.verbose) > 1:
+            logging.getLogger().setLevel(logging.DEBUG)
 
     # Now execute the command
     if not hasattr(args, "func"):
