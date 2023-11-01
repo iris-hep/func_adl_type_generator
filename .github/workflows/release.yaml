@@ -45,10 +45,20 @@ jobs:
           repository: gordonwatts/func-adl-types-atlas
           ref: ${{ github.event.inputs.func_adl_types_atlas_version }}
           path: func_adl_types_atlas
+      - name: Cache Type YAML Files
+        id: cache-type-yaml
+        uses: actions/cache@v3
+        with:
+          path: cache/yaml
+          key: type-tyaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
         env:
           RELEASE_VERSION: ${{ github.event.inputs.release_version }}
         run: |
-          pip list
-          echo "Release version: $RELEASE_VERSION"
-          ls -R
+          atlas_release_type_builder $RELEASE_VERSION --type_json ./cache/yaml --type_package ./cache/package
+          ls -R cache
+      - name: Save Python Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-package
+          path: cache/package
