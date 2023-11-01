@@ -35,16 +35,18 @@ jobs:
           repository: gordonwatts/func_adl_servicex_type_generator
           ref: ${{ github.event.inputs.func_adl_servicex_type_generator_version }}
           path: func_adl_servicex_type_generator
-      - name: Install dependencies
-        run: |
-          cd func_adl_servicex_type_generator
-          pip install -e .
       - name: Install func-adl-types-atlas
         uses: actions/checkout@v2
         with:
           repository: gordonwatts/func-adl-types-atlas
           ref: ${{ github.event.inputs.func_adl_types_atlas_version }}
           path: func_adl_types_atlas
+      - name: Install dependencies
+        run: |
+          pwd
+          ls -R
+          cd func_adl_servicex_type_generator
+          pip install -e .
       - name: Cache Type YAML Files
         id: cache-type-yaml
         uses: actions/cache@v3
