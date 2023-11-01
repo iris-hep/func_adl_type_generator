@@ -55,7 +55,9 @@ def run_command(cmd: str | List[str]):
         raise
 
 
-def create_type_json(release: str, clean: bool, location: Path) -> Path:
+def create_type_json(
+    release: str, clean: bool, location: Path, cmd_location: Path
+) -> Path:
     """Create the type json file for a release.
 
     Args:
@@ -73,7 +75,7 @@ def create_type_json(release: str, clean: bool, location: Path) -> Path:
     # Do the build.
     logging.debug(f"Running container to build json type file for {release}")
     run_command(
-        "../../func-adl-types-atlas/scripts/build_xaod_edm.ps1"
+        f"{cmd_location}/func-adl-types-atlas/scripts/build_xaod_edm.ps1"
         f" {release} {yaml_path}"
     )
     logging.debug(f"Finished building json type file for {release}")
@@ -124,7 +126,9 @@ def create_python_package(
 
 
 def do_build_for_release(release, args):
-    yaml_location = create_type_json(release, args.clean, args.type_json)
+    yaml_location = create_type_json(
+        release, args.clean, args.type_json, args.command_location
+    )
     return create_python_package(release, args.clean, yaml_location, args.type_package)
 
 
@@ -295,6 +299,12 @@ def main():
                 "../type_packages",
                 help="Location where the python type package should be created",
             ),
+        )
+        parser.add_argument(
+            "-- command_location",
+            type=Path,
+            default=Path("../../"),
+            help="Location of the scripts to run to build the type json file",
         )
 
     add_build_args(build_command)
