@@ -78,7 +78,7 @@ def create_type_json(
     logging.debug(f"Running container to build json type file for {release}")
     run_command(
         f"{cmd_location}/func-adl-types-atlas/scripts/build_xaod_edm.ps1"
-        f" {release} {yaml_path}"
+        # f" {release} {yaml_path}"
     )
     logging.debug(f"Finished building json type file for {release}")
 
