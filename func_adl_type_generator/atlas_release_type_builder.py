@@ -111,10 +111,10 @@ def create_python_package(
 
     # Re-create it.
     commands = []
-    commands.append(r". c:\Users\gordo\Code\iris-hep\venv_poetry\Scripts\Activate.ps1")
-    commands.append(r"cd c:\Users\gordo\Code\iris-hep\func_adl_servicex_type_generator")
+    # commands.append(r". c:\Users\gordo\Code\iris-hep\venv_poetry\Scripts\Activate.ps1")
+    # commands.append(r"cd c:\Users\gordo\Code\iris-hep\func_adl_servicex_type_generator")
     commands.append(
-        f"poetry run sx_type_gen {json_location.absolute()} --output_directory"
+        f"sx_type_gen {json_location.absolute()} --output_directory"
         f" {package_location.absolute()}"
     )
     run_command(commands)
