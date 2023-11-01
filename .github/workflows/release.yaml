@@ -43,8 +43,6 @@ jobs:
           path: func-adl-types-atlas
       - name: Install dependencies
         run: |
-          pwd
-          ls -R | % {$_.Name}
           cd func_adl_servicex_type_generator
           pip install -e .
       - name: Cache Type YAML Files
