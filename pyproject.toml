@@ -1,0 +1,14 @@
+[project]
+name = "func_adl_type_generator"
+version = "0.1.0"
+description = "Commands for working with func_adl types"
+license = { text = "MIT" }
+authors = [{ name = "Gordon Watts <gwatts@uw.edu>" }]
+
+dependencies = ["rich"]
+
+[project.optional-dependencies]
+test = ["black", "flake8"]
+
+# [project.scripts]
+# atlas_build_type_info = "func_adl_type_commands.test_atlas_release_types:main"
