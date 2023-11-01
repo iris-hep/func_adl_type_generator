@@ -301,7 +301,7 @@ def main():
             ),
         )
         parser.add_argument(
-            "-- command_location",
+            "--command_location",
             type=Path,
             default=Path("../../"),
             help="Location of the scripts to run to build the type json file",
