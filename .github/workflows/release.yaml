@@ -40,7 +40,7 @@ jobs:
         with:
           repository: gordonwatts/func-adl-types-atlas
           ref: ${{ github.event.inputs.func_adl_types_atlas_version }}
-          path: func_adl_types_atlas
+          path: func-adl-types-atlas
       - name: Install dependencies
         run: |
           pwd
