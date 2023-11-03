@@ -1,13 +1,15 @@
 import argparse
-from collections import defaultdict
-from dataclasses import dataclass
 import logging
 import shutil
 import subprocess
 import sys
 import tempfile
+from collections import defaultdict
+from dataclasses import dataclass
 from pathlib import Path
 from typing import List
+
+from func_adl_types_atlas.build_xaod_edm import build_xaod_edm
 from rich.console import Console
 from rich.table import Table
 
@@ -76,10 +78,7 @@ def create_type_json(
 
     # Do the build.
     logging.debug(f"Running container to build json type file for {release}")
-    run_command(
-        f"{cmd_location}/func-adl-types-atlas/scripts/build_xaod_edm.ps1"
-        f" {release} {yaml_path}"
-    )
+    build_xaod_edm(release, yaml_path)
     logging.debug(f"Finished building json type file for {release}")
 
     return yaml_path
