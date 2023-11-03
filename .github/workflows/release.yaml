@@ -14,7 +14,7 @@ on:
       func_adl_types_atlas_version:
         description: "func_adl_types_atlas github tag"
         required: true
-        default: "v1.0.0b14"
+        default: "v1.0.0b15"
 
 jobs:
   release:
