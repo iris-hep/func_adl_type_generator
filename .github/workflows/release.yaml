@@ -47,6 +47,9 @@ jobs:
         run: |
           cd func_adl_servicex_type_generator
           pip install -e .
+          cd ..
+          cd func-adl-types-atlas
+          pip install -e .
       - name: Cache Type YAML Files
         id: cache-type-yaml
         uses: actions/cache@v3
