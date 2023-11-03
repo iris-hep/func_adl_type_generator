@@ -57,7 +57,6 @@ jobs:
           path: cache/yaml
           key: type-tyaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
-        shell: pwsh
         run: |
           # docker --version
           # $pwd = Get-Location
