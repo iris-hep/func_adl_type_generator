@@ -58,15 +58,17 @@ jobs:
           key: type-yaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
         run: |
-          # atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
           atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
       - name: Save type yaml file to cache
         uses: actions/cache/save@v3
         with:
           path: cache/yaml
           key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
-      # - name: Save Python Package
-      #   uses: actions/upload-artifact@v2
-      #   with:
-      #     name: python-package
-      #     path: cache/package
+      - name: Build Python Package
+        run: |
+          atlas_release_type_builder -vv build --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
+      - name: Save Python Package
+        uses: actions/upload-artifact@v2
+        with:
+          name: python-package
+          path: cache/package
