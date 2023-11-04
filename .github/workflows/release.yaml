@@ -58,7 +58,7 @@ jobs:
           key: type-yaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
         run: |
-          atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
+          atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
       - name: Save type yaml file to cache
         uses: actions/cache/save@v3
         with:
