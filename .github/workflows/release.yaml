@@ -17,7 +17,7 @@ on:
         default: "v1.0.0b23"
 
 jobs:
-  build-yaml:
+  build-package:
     # This must run on ubuntu because we need a docker image that
     # runs Linux.
     runs-on: ubuntu-latest
