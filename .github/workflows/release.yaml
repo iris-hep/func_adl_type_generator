@@ -60,7 +60,6 @@ jobs:
         run: |
           # atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
           atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
-          ls -R cache
       - name: Save type yaml file to cache
         uses: actions/cache/save@v3
         with:
