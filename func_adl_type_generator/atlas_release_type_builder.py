@@ -144,6 +144,11 @@ def do_build(args):
     return 0
 
 
+def do_yaml(args):
+    for r in args.release:
+        create_type_json(r, args.clean, args.type_json, args.command_location)
+
+
 def do_test(args):
     """After making sure that the packages are built, run the requested tests
 
@@ -273,7 +278,7 @@ def main():
         "build", help="Build type library for a release"
     )
 
-    def add_build_args(parser, add_release=True):
+    def add_build_args(parser, add_release=True, package_flags=True):
         if add_release:
             parser.add_argument(
                 "release", type=str, help="List of releases to build", action="append"
@@ -290,14 +295,15 @@ def main():
             default=Path("../type_files"),
             help="Location where yaml type files should be written",
         )
-        parser.add_argument(
-            "--type_package",
-            type=Path,
-            default=Path(
-                "../type_packages",
-                help="Location where the python type package should be created",
-            ),
-        )
+        if package_flags:
+            parser.add_argument(
+                "--type_package",
+                type=Path,
+                default=Path(
+                    "../type_packages",
+                    help="Location where the python type package should be created",
+                ),
+            )
         parser.add_argument(
             "--command_location",
             type=Path,
@@ -307,6 +313,13 @@ def main():
 
     add_build_args(build_command)
     build_command.set_defaults(func=do_build)
+
+    # The build yaml command - just does the first part of the build.
+    build_yaml_command = commands.add_parser(
+        "yaml", help="Build type yaml for a release"
+    )
+    add_build_args(build_yaml_command, package_flags=False)
+    build_yaml_command.set_defaults(func=create_type_json)
 
     # The test command
     test_command = commands.add_parser("test", help="Run tests for a release")

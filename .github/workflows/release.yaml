@@ -58,10 +58,7 @@ jobs:
           key: type-tyaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
         run: |
-          # docker --version
-          # $pwd = Get-Location
-          # docker run --rm gitlab-registry.cern.ch/atlas/athena/analysisbase:24.2.12 --mount "type=bind,source=$pwd,target=/workdir/output" bash -c ls /workdir/output
-          atlas_release_type_builder -vv build --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
+          atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
           ls -R cache
       - name: Save Python Package
         uses: actions/upload-artifact@v2
