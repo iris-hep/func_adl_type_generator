@@ -17,7 +17,7 @@ on:
         default: "v1.0.0b23"
 
 jobs:
-  release:
+  build-yaml:
     # This must run on ubuntu because we need a docker image that
     # runs Linux.
     runs-on: ubuntu-latest
@@ -55,13 +55,19 @@ jobs:
         uses: actions/cache@v3
         with:
           path: cache/yaml
-          key: type-tyaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
+          key: type-yaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
       - name: Build YAML Type File
         run: |
-          atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
+          # atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
+          atlas_release_type_builder -vv yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
           ls -R cache
-      - name: Save Python Package
-        uses: actions/upload-artifact@v2
+      - name: Save type yaml file to cache
+        uses: actions/cache/save@v3
         with:
-          name: python-package
-          path: cache/package
+          path: cache/yaml
+          key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
+      # - name: Save Python Package
+      #   uses: actions/upload-artifact@v2
+      #   with:
+      #     name: python-package
+      #     path: cache/package
