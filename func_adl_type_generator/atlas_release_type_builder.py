@@ -13,6 +13,8 @@ from func_adl_types_atlas.build_xaod_edm import build_xaod_edm  # type: ignore
 from rich.console import Console
 from rich.table import Table
 
+from func_adl_servicex_type_generator import generate_package
+
 valid_tests = ["jets_uncalib", "jets_calib", "met", "error_bad_argument"]
 
 
@@ -110,12 +112,13 @@ def create_python_package(
         return package_location
 
     # Re-create it.
-    commands = []
-    commands.append(
-        f"sx_type_gen {json_location.absolute()} --output_directory"
-        f" {package_location.absolute()}"
-    )
-    run_command(commands)
+    generate_package(json_location, package_location)
+    # commands = []
+    # commands.append(
+    #     f"sx_type_gen {json_location.absolute()} --output_directory"
+    #     f" {package_location.absolute()}"
+    # )
+    # run_command(commands)
 
     # Next we need to find the package - the actual name of the folder might vary a
     # little bit due to the release series.

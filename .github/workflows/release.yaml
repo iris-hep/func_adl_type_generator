@@ -66,6 +66,7 @@ jobs:
           key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
       - name: Build Python Package
         run: |
+          sx_type_gen --help
           atlas_release_type_builder -vv build --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
       - name: Save Python Package
         uses: actions/upload-artifact@v2
