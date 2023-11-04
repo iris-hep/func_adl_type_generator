@@ -75,6 +75,7 @@ def create_type_json(
         return yaml_path
 
     # Do the build.
+    yaml_path.parent.mkdir(parents=True, exist_ok=True)
     logging.debug(f"Running container to build json type file for {release}")
     build_xaod_edm(release, yaml_path)
     logging.debug(f"Finished building json type file for {release}")
