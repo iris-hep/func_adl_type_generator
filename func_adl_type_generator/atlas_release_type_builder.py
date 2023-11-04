@@ -319,7 +319,7 @@ def main():
         "yaml", help="Build type yaml for a release"
     )
     add_build_args(build_yaml_command, package_flags=False)
-    build_yaml_command.set_defaults(func=create_type_json)
+    build_yaml_command.set_defaults(func=do_yaml)
 
     # The test command
     test_command = commands.add_parser("test", help="Run tests for a release")
