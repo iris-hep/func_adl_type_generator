@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import List
 
-from func_adl_types_atlas.build_xaod_edm import build_xaod_edm
+from func_adl_types_atlas.build_xaod_edm import build_xaod_edm  # type: ignore
 from rich.console import Console
 from rich.table import Table
 
@@ -26,9 +26,7 @@ def run_command(cmd: str | List[str]):
     if not isinstance(cmd, list):
         cmd = [cmd]
 
-    command_line = (
-        "powershell -c " + ";".join(cmd) if len(cmd) > 1 else f"powershell {cmd[0]}"
-    )
+    command_line = ";".join(cmd) if len(cmd) > 1 else f"{cmd[0]}"
     logging.debug(f"Running command: {command_line}")
 
     try:
