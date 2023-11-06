@@ -70,5 +70,5 @@ jobs:
       - name: Save Python Package
         uses: actions/upload-artifact@v2
         with:
-          name: python-package
-          path: cache/package
+          name: func_adl_xaod-${{ github.event.inputs.release_version }}
+          path: cache/package/${{ github.event.inputs.release_version }}
