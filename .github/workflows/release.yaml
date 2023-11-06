@@ -30,6 +30,10 @@ jobs:
         id: determine_tag
         run: |
           git tag
+          echo "exact match"
+          git describe --tags --exact-match
+          echo "with null"
+          git describe --tags --exact-match 2>/dev/null
           TAG_NAME=$(git describe --tags --exact-match 2>/dev/null || echo "2.0.0a1")
           echo "package_version=$TAG_NAME" >> $GITHUB_OUTPUT
       - name: Install dependencies
