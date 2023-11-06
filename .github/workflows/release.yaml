@@ -7,20 +7,15 @@ on:
         description: "Release version"
         required: true
         default: "24.2.12"
-      func_adl_servicex_type_generator_version:
-        description: "func_adl_servicex_type_generator github tag"
-        required: true
-        default: "v1.0.0b4"
-      func_adl_types_atlas_version:
-        description: "func_adl_types_atlas github tag"
-        required: true
-        default: "v1.0.0b23"
 
 jobs:
   build-package:
     # This must run on ubuntu because we need a docker image that
     # runs Linux.
     runs-on: ubuntu-latest
+    env:
+      func_adl_servicex_type_generator_version: "v1.0.0b4"
+      func_adl_types_atlas_version: "v1.0.0b23"
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -35,13 +30,13 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: gordonwatts/func_adl_servicex_type_generator
-          ref: ${{ github.event.inputs.func_adl_servicex_type_generator_version }}
+          ref: ${{ env.func_adl_servicex_type_generator_version }}
           path: func_adl_servicex_type_generator
       - name: Install func-adl-types-atlas
         uses: actions/checkout@v2
         with:
           repository: gordonwatts/func-adl-types-atlas
-          ref: ${{ github.event.inputs.func_adl_types_atlas_version }}
+          ref: ${{ env.func_adl_types_atlas_version }}
           path: func-adl-types-atlas
       - name: Install dependencies
         run: |
@@ -55,7 +50,7 @@ jobs:
         uses: actions/cache/restore@v3
         with:
           path: cache/yaml
-          key: type-yaml-${{ github.event.inputs.release_version }}-${{ github.event.inputs.func_adl_types_atlas_version }}
+          key: type-yaml-${{ github.event.inputs.release_version }}-${{ env.func_adl_types_atlas_version }}
       - name: Build YAML Type File
         run: |
           atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
