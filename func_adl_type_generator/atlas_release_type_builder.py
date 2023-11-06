@@ -86,7 +86,7 @@ def create_type_json(
 
 
 def create_python_package(
-    release: str, clean: bool, json_location: Path, location: Path
+    release: str, package_version: str, clean: bool, json_location: Path, location: Path
 ) -> Path:
     """Given the type json file already exists, create the python
     package for the full type information.
@@ -112,13 +112,7 @@ def create_python_package(
         return package_location
 
     # Re-create it.
-    generate_package(json_location, package_location)
-    # commands = []
-    # commands.append(
-    #     f"sx_type_gen {json_location.absolute()} --output_directory"
-    #     f" {package_location.absolute()}"
-    # )
-    # run_command(commands)
+    generate_package(json_location, package_version, package_location)
 
     # Next we need to find the package - the actual name of the folder might vary a
     # little bit due to the release series.
@@ -130,7 +124,9 @@ def do_build_for_release(release, args):
     yaml_location = create_type_json(
         release, args.clean, args.type_json, args.command_location
     )
-    return create_python_package(release, args.clean, yaml_location, args.type_package)
+    return create_python_package(
+        release, args.package_version, args.clean, yaml_location, args.type_package
+    )
 
 
 def do_build(args):
@@ -306,6 +302,12 @@ def main():
                     "../type_packages",
                     help="Location where the python type package should be created",
                 ),
+            )
+            parser.add_argument(
+                "--package_version",
+                type=str,
+                default="2.0.0a1",
+                help="Version of the python package to create",
             )
         parser.add_argument(
             "--command_location",
