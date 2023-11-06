@@ -16,7 +16,6 @@ jobs:
     env:
       func_adl_servicex_type_generator_version: "v1.0.0b4"
       func_adl_types_atlas_version: "v1.0.0b23"
-      package_version: 2.0.0a1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
