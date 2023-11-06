@@ -16,6 +16,7 @@ jobs:
     env:
       func_adl_servicex_type_generator_version: "v1.0.0b4"
       func_adl_types_atlas_version: "v1.0.0b23"
+      package_version: 2.0.0a1
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -23,6 +24,11 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: "3.11"
+      - name: Determine Tag
+        id: determine_tag
+        run: |
+          TAG_NAME=$(git describe --tags --exact-match 2>/dev/null || echo "2.0.0a1")
+          echo ::set-output name=package_version::$TAG_NAME
       - name: Install dependencies
         run: |
           pip install -e .
@@ -61,7 +67,7 @@ jobs:
           key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
       - name: Build Python Package
         run: |
-          atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package ${{ github.event.inputs.release_version }}
+          atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ steps.determine_tag.outputs.package_version }} ${{ github.event.inputs.release_version }}
       - name: Save Python Package
         uses: actions/upload-artifact@v2
         with:
