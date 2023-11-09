@@ -74,3 +74,8 @@ jobs:
         with:
           name: func_adl_xaod-${{ steps.determine_tag.outputs.package_version }}-${{ github.event.inputs.release_version }}
           path: cache/package/${{ github.event.inputs.release_version }}
+      - name: Publish to PyPi with Poetry
+        run: |
+          cd cache/package/${{ github.event.inputs.release_version }}
+          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+          poetry publish --build
