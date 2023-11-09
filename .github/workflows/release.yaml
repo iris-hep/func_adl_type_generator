@@ -76,6 +76,7 @@ jobs:
           path: cache/package/${{ github.event.inputs.release_version }}
       - name: Publish to PyPi with Poetry
         run: |
+          pip install poetry
           cd cache/package/${{ github.event.inputs.release_version }}
           poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
           poetry publish --build
