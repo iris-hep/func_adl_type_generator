@@ -16,7 +16,7 @@ inputs:
   push_to_pypi:
     description: "Push to pypi - set to true. Default is false"
     required: false
-    default: 'false'
+    default: ''
   PYPI_TOKEN:
     description: "Token to push to pypi"
     required: ''
