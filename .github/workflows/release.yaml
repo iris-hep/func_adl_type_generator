@@ -23,9 +23,13 @@ jobs:
     env:
       release_version: ${{ github.event.inputs.release_version }}
     steps:
-      - name: Test
-        run: |
-          echo "Running on $release_version"
+      - name: Build Package
+        uses: ./.github/actions/build-package
+        with:
+          release_version: ${{ github.event.inputs.release_version }}
+          func_adl_servicex_type_generator_version: "v1.0.0b4"
+          func_adl_types_atlas_version: "v1.0.0b23"
+          python_package_base_version: "0.0.1"
 
   build-all-packages:
     if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -34,9 +38,13 @@ jobs:
       matrix:
         release_version: ["24.2.12", "24.2.13"]
     steps:
-      - name: Test
-        run: |
-          echo "Running on $release_version"
+      - name: Build Package
+        uses: ./.github/actions/build-package
+        with:
+          release_version: ${{ github.event.inputs.release_version }}
+          func_adl_servicex_type_generator_version: "v1.0.0b4"
+          func_adl_types_atlas_version: "v1.0.0b23"
+          python_package_base_version: "0.0.1"
     # This must run on ubuntu because we need a docker image that
     # runs Linux.
     # runs-on: ubuntu-latest

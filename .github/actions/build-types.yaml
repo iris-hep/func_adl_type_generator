@@ -8,8 +8,11 @@ inputs:
     description: 'Version of func_adl_types_atlas'
     required: true
   python_package_base_version:
-   description: 'Version of the python package'
-   required: true
+    description: 'Version of the python package'
+    required: true
+  release_version:
+    description: "Tag of ATLAS container to build the type files from"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -17,3 +20,4 @@ runs:
      echo ${{ inputs.func_adl_servicex_type_generator_version }}
      echo ${{ inputs.func_adl_types_atlas_version }}
      echo ${{ inputs.python_package_base_version }}
+     echo ${{ inputs.release_version }}
