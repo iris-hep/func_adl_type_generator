@@ -1,0 +1,14 @@
+name: 'Determine tags'
+description: "Determines the tag that we are running against (or uses a default). A full checkout must have been done!"
+inputs:
+  default_tag:
+   description: "Default tag to return if we are not sitting at a tag git ref"
+   required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Determine tag
+      shell: "bash"
+      run: |
+        TAG_NAME=$(git describe --tags --exact-match 2>/dev/null || echo ${{ inputs.default_tag }})
+        echo "package_version=$TAG_NAME" >> $GITHUB_OUTPUT
