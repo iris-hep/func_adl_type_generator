@@ -23,6 +23,8 @@ jobs:
     env:
       release_version: ${{ github.event.inputs.release_version }}
     steps:
+      - name: Checkout package
+        uses: actions/checkout@v2
       - name: Build Package
         uses: ./.github/actions/build-types
         with:
@@ -38,6 +40,8 @@ jobs:
       matrix:
         release_version: ["24.2.12", "24.2.13"]
     steps:
+      - name: Checkout package
+        uses: actions/checkout@v2
       - name: Build Package
         uses: ./.github/actions/build-types
         with:
