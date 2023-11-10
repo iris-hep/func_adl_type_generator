@@ -1,5 +1,7 @@
 name: Release
 
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch.
 on:
   workflow_dispatch:
     inputs:
@@ -7,76 +9,101 @@ on:
         description: "Release version"
         required: true
         default: "24.2.12"
+      push_to_pypi:
+        description: "Push Final Python Package to PyPi"
+        required: true
+        default: "false"
+  release:
+    types: [created]
 
 jobs:
-  build-package:
-    # This must run on ubuntu because we need a docker image that
-    # runs Linux.
+  build-single-package:
+    if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     env:
-      func_adl_servicex_type_generator_version: "v1.0.0b4"
-      func_adl_types_atlas_version: "v1.0.0b23"
+      release_version: ${{ github.event.inputs.release_version }}
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: "3.11"
-      - name: Determine Tag
-        id: determine_tag
+      - name: Test
         run: |
-          TAG_NAME=$(git describe --tags --exact-match 2>/dev/null || echo "2.0.0a1")
-          echo "package_version=$TAG_NAME" >> $GITHUB_OUTPUT
-      - name: Install dependencies
+          echo "Running on $release_version"
+
+  build-all-packages:
+    if: ${{ github.event_name == 'workflow_dispatch' }}
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        release_version: ["24.2.12", "24.2.13"]
+    steps:
+      - name: Test
         run: |
-          pip install -e .
-      - name: Install func_adl_servicex_type_generator
-        uses: actions/checkout@v2
-        with:
-          repository: gordonwatts/func_adl_servicex_type_generator
-          ref: ${{ env.func_adl_servicex_type_generator_version }}
-          path: func_adl_servicex_type_generator
-      - name: Install func-adl-types-atlas
-        uses: actions/checkout@v2
-        with:
-          repository: gordonwatts/func-adl-types-atlas
-          ref: ${{ env.func_adl_types_atlas_version }}
-          path: func-adl-types-atlas
-      - name: Install dependencies
-        run: |
-          cd func_adl_servicex_type_generator
-          pip install -e .
-          cd ..
-          cd func-adl-types-atlas
-          pip install -e .
-      - name: Cache Type YAML Files
-        id: cache-type-yaml
-        uses: actions/cache/restore@v3
-        with:
-          path: cache/yaml
-          key: type-yaml-${{ github.event.inputs.release_version }}-${{ env.func_adl_types_atlas_version }}
-      - name: Build YAML Type File
-        run: |
-          atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
-      - name: Save type yaml file to cache
-        uses: actions/cache/save@v3
-        with:
-          path: cache/yaml
-          key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
-      - name: Build Python Package
-        run: |
-          atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ steps.determine_tag.outputs.package_version }} ${{ github.event.inputs.release_version }}
-      - name: Save Python Package
-        uses: actions/upload-artifact@v2
-        with:
-          name: func_adl_xaod-${{ steps.determine_tag.outputs.package_version }}-${{ github.event.inputs.release_version }}
-          path: cache/package/${{ github.event.inputs.release_version }}
-      - name: Publish to PyPi with Poetry
-        run: |
-          pip install poetry
-          cd cache/package/${{ github.event.inputs.release_version }}
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-          poetry publish --build
+          echo "Running on $release_version"
+    # This must run on ubuntu because we need a docker image that
+    # runs Linux.
+    # runs-on: ubuntu-latest
+    # env:
+    #   func_adl_servicex_type_generator_version: "v1.0.0b4"
+    #   func_adl_types_atlas_version: "v1.0.0b23"
+    # steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v2
+    #     with:
+    #       fetch-depth: 0
+    #   - name: Set up Python
+    #     uses: actions/setup-python@v2
+    #     with:
+    #       python-version: "3.11"
+    #   - name: Determine Tag
+    #     id: determine_tag
+    #     run: |
+    #       TAG_NAME=$(git describe --tags --exact-match 2>/dev/null || echo "2.0.0a1")
+    #       echo "package_version=$TAG_NAME" >> $GITHUB_OUTPUT
+    #   - name: Install dependencies
+    #     run: |
+    #       pip install -e .
+    #   - name: Install func_adl_servicex_type_generator
+    #     uses: actions/checkout@v2
+    #     with:
+    #       repository: gordonwatts/func_adl_servicex_type_generator
+    #       ref: ${{ env.func_adl_servicex_type_generator_version }}
+    #       path: func_adl_servicex_type_generator
+    #   - name: Install func-adl-types-atlas
+    #     uses: actions/checkout@v2
+    #     with:
+    #       repository: gordonwatts/func-adl-types-atlas
+    #       ref: ${{ env.func_adl_types_atlas_version }}
+    #       path: func-adl-types-atlas
+    #   - name: Install dependencies
+    #     run: |
+    #       cd func_adl_servicex_type_generator
+    #       pip install -e .
+    #       cd ..
+    #       cd func-adl-types-atlas
+    #       pip install -e .
+    #   - name: Cache Type YAML Files
+    #     id: cache-type-yaml
+    #     uses: actions/cache/restore@v3
+    #     with:
+    #       path: cache/yaml
+    #       key: type-yaml-${{ github.event.inputs.release_version }}-${{ env.func_adl_types_atlas_version }}
+    #   - name: Build YAML Type File
+    #     run: |
+    #       atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
+    #   - name: Save type yaml file to cache
+    #     uses: actions/cache/save@v3
+    #     with:
+    #       path: cache/yaml
+    #       key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
+    #   - name: Build Python Package
+    #     run: |
+    #       atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ steps.determine_tag.outputs.package_version }} ${{ github.event.inputs.release_version }}
+    #   - name: Save Python Package
+    #     uses: actions/upload-artifact@v2
+    #     with:
+    #       name: func_adl_xaod-${{ steps.determine_tag.outputs.package_version }}-${{ github.event.inputs.release_version }}
+    #       path: cache/package/${{ github.event.inputs.release_version }}
+    #   - name: Publish to PyPi with Poetry
+    #     run: |
+    #       pip install poetry
+    #       cd cache/package/${{ github.event.inputs.release_version }}
+    #       poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+    #       poetry publish --build
