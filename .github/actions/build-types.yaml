@@ -1,0 +1,19 @@
+name: 'Build Type Package'
+description: 'Builds a type package given a few tags'
+inputs:
+  func_adl_servicex_type_generator_version:
+    description: 'Version of func_adl_servicex_type_generator'
+    required: true
+  func_adl_types_atlas_version:
+    description: 'Version of func_adl_types_atlas'
+    required: true
+  python_package_base_version:
+   description: 'Version of the python package'
+   required: true
+runs:
+  using: "composite"
+  steps:
+   run: |
+     echo ${{ inputs.func_adl_servicex_type_generator_version }}
+     echo ${{ inputs.func_adl_types_atlas_version }}
+     echo ${{ inputs.python_package_base_version }}
