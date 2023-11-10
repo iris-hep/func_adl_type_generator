@@ -45,6 +45,8 @@ jobs:
           func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
           func_adl_types_atlas_version: $func_adl_types_atlas_version
           python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
+          push_to_pypi: ${{ github.event.inputs.push_to_pypi }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
   build-all-packages:
     if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -69,3 +71,5 @@ jobs:
           func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
           func_adl_types_atlas_version: $func_adl_types_atlas_version
           python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
+          push_to_pypi: true
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
