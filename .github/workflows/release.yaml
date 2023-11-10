@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        release_version: ["24.2.12", "24.2.13"]
+        release_version: ["21.2.231", "22.2.107"]
     steps:
       - name: Checkout package
         uses: actions/checkout@v2
