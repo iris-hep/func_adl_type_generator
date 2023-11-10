@@ -19,7 +19,7 @@ inputs:
     default: 'false'
   PYPI_TOKEN:
     description: "Token to push to pypi"
-    required: false
+    required: ''
 runs:
   using: "composite"
   steps:
