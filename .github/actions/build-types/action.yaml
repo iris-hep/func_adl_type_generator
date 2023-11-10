@@ -73,7 +73,7 @@ runs:
     - name: Save Python Package
       uses: actions/upload-artifact@v2
       with:
-        name: func_adl_xaod-${{ steps.determine_tag.outputs.package_version }}-${{ inputs.release_version }}
+        name: func_adl_xaod-${{ inputs.python_package_base_version }}-${{ inputs.release_version }}
         path: cache/package/${{ inputs.release_version }}
     - name: Publish to PyPi with Poetry
       if: ${{ inputs.push_to_pypi }}

@@ -37,6 +37,8 @@ jobs:
         uses: ./.github/actions/determine-tag
         with:
           default_tag: 2.0.0a1
+      - name: dump version
+        run: echo "Version is ${{ steps.determine-tag.outputs.package_version }}"
       - name: Build Package
         uses: ./.github/actions/build-types
         with:
