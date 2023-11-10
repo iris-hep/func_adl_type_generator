@@ -12,3 +12,5 @@ runs:
       run: |
         TAG_NAME=$(git describe --tags --exact-match 2>/dev/null || echo ${{ inputs.default_tag }})
         echo "package_version=$TAG_NAME" >> $GITHUB_OUTPUT
+        echo $TAG_NAME
+        echo ${{ inputs.default_tag }}
