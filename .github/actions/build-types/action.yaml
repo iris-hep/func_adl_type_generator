@@ -16,19 +16,9 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - name: Input Parameters
-      shell: "bash"
-      run: |
-        echo "${{ inputs.func_adl_servicex_type_generator_version }}"
-        echo ${{ inputs.func_adl_types_atlas_version }}
-        echo ${{ inputs.python_package_base_version }}
-        echo ${{ inputs.release_version }}
-    # This must run on ubuntu because we need a docker image that
-    # runs Linux.
-    # runs-on: ubuntu-latest
-    # env:
-    #   func_adl_servicex_type_generator_version: "v1.0.0b4"
-    #   func_adl_types_atlas_version: "v1.0.0b23"
+    - name: Print it
+      run: echo ${{ inputs.func_adl_types_atlas_version }}
+      shell: bash
     # steps:
     #   - name: Checkout
     #     uses: actions/checkout@v2

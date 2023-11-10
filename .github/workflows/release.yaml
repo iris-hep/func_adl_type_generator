@@ -16,6 +16,11 @@ on:
   release:
     types: [created]
 
+# These should be set to the latgest versions of everything.
+env:
+  func_adl_servicex_type_generator_version: "v1.0.0b4"
+  func_adl_types_atlas_version: "v1.0.0b23"
+
 jobs:
   build-single-package:
     if: ${{ github.event_name == 'workflow_dispatch' }}
@@ -36,8 +41,8 @@ jobs:
         uses: ./.github/actions/build-types
         with:
           release_version: ${{ github.event.inputs.release_version }}
-          func_adl_servicex_type_generator_version: "v1.0.0b4"
-          func_adl_types_atlas_version: "v1.0.0b23"
+          func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
+          func_adl_types_atlas_version: $func_adl_types_atlas_version
           python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
 
   build-all-packages:
@@ -59,7 +64,7 @@ jobs:
       - name: Build Package
         uses: ./.github/actions/build-types
         with:
-          release_version: ${{ github.event.inputs.release_version }}
-          func_adl_servicex_type_generator_version: "v1.0.0b4"
-          func_adl_types_atlas_version: "v1.0.0b23"
+          release_version: ${{ matrix.release_version }}
+          func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
+          func_adl_types_atlas_version: $func_adl_types_atlas_version
           python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
