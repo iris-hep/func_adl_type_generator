@@ -37,15 +37,13 @@ jobs:
         uses: ./.github/actions/determine-tag
         with:
           default_tag: 2.0.0a1
-      - name: dump version
-        run: echo "Version is ${{ steps.determine-tag.outputs.package_version }}"
       - name: Build Package
         uses: ./.github/actions/build-types
         with:
           release_version: ${{ github.event.inputs.release_version }}
           func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
           func_adl_types_atlas_version: $func_adl_types_atlas_version
-          python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
+          python_package_base_version: "${{ steps.determine-tag.outputs.release_version }}"
 
   build-all-packages:
     if: ${{ github.event_name != 'workflow_dispatch' }}
@@ -69,4 +67,4 @@ jobs:
           release_version: ${{ matrix.release_version }}
           func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
           func_adl_types_atlas_version: $func_adl_types_atlas_version
-          python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
+          python_package_base_version: "${{ steps.determine-tag.outputs.release_version }}"
