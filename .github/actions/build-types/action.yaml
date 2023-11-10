@@ -13,6 +13,10 @@ inputs:
   release_version:
     description: "Tag of ATLAS container to build the type files from"
     required: true
+  push_to_pypi:
+    description: "Push to pypi - set to true. Default is false"
+    required: false
+    default: 'false'
 runs:
   using: "composite"
   steps:
@@ -44,31 +48,35 @@ runs:
         cd ..
         cd func-adl-types-atlas
         pip install -e .
-    #   - name: Cache Type YAML Files
-    #     id: cache-type-yaml
-    #     uses: actions/cache/restore@v3
-    #     with:
-    #       path: cache/yaml
-    #       key: type-yaml-${{ github.event.inputs.release_version }}-${{ env.func_adl_types_atlas_version }}
-    #   - name: Build YAML Type File
-    #     run: |
-    #       atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
-    #   - name: Save type yaml file to cache
-    #     uses: actions/cache/save@v3
-    #     with:
-    #       path: cache/yaml
-    #       key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
-    #   - name: Build Python Package
-    #     run: |
-    #       atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ steps.determine_tag.outputs.package_version }} ${{ github.event.inputs.release_version }}
-    #   - name: Save Python Package
-    #     uses: actions/upload-artifact@v2
-    #     with:
-    #       name: func_adl_xaod-${{ steps.determine_tag.outputs.package_version }}-${{ github.event.inputs.release_version }}
-    #       path: cache/package/${{ github.event.inputs.release_version }}
-    #   - name: Publish to PyPi with Poetry
-    #     run: |
-    #       pip install poetry
-    #       cd cache/package/${{ github.event.inputs.release_version }}
-    #       poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-    #       poetry publish --build
+    - name: Cache Type YAML Files
+      id: cache-type-yaml
+      uses: actions/cache/restore@v3
+      with:
+        path: cache/yaml
+        key: type-yaml-${{ github.event.inputs.release_version }}-${{ env.func_adl_types_atlas_version }}
+    - name: Build YAML Type File
+      shell: bash
+      run: |
+        atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ github.event.inputs.release_version }}
+    - name: Save type yaml file to cache
+      uses: actions/cache/save@v3
+      with:
+        path: cache/yaml
+        key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
+    - name: Build Python Package
+      shell: bash
+      run: |
+        atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ steps.determine_tag.outputs.package_version }} ${{ github.event.inputs.release_version }}
+    - name: Save Python Package
+      uses: actions/upload-artifact@v2
+      with:
+        name: func_adl_xaod-${{ steps.determine_tag.outputs.package_version }}-${{ github.event.inputs.release_version }}
+        path: cache/package/${{ github.event.inputs.release_version }}
+    - name: Publish to PyPi with Poetry
+      if: ${{ inputs.push_to_pypi }}
+      shell: bash
+      run: |
+        pip install poetry
+        cd cache/package/${{ github.event.inputs.release_version }}
+        poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
+        poetry publish --build
