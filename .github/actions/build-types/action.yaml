@@ -69,7 +69,7 @@ runs:
     - name: Build Python Package
       shell: bash
       run: |
-        atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ steps.determine_tag.outputs.package_version }} ${{ inputs.release_version }}
+        atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ inputs.python_package_base_version }} ${{ inputs.release_version }}
     - name: Save Python Package
       uses: actions/upload-artifact@v2
       with:
