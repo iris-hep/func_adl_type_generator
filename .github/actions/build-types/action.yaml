@@ -32,13 +32,13 @@ runs:
       run: |
         pip install -e .
     - name: Install func_adl_servicex_type_generator
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: gordonwatts/func_adl_servicex_type_generator
         ref: ${{ env.func_adl_servicex_type_generator_version }}
         path: func_adl_servicex_type_generator
     - name: Install func-adl-types-atlas
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: gordonwatts/func-adl-types-atlas
         ref: ${{ env.func_adl_types_atlas_version }}
