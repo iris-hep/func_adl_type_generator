@@ -4,10 +4,15 @@ inputs:
   default_tag:
    description: "Default tag to return if we are not sitting at a tag git ref"
    required: true
+outputs:
+  package_version:
+    description: "The package version discovered looking at tags or the default"
+    value: steps.determine.outputs.package_version
 runs:
   using: "composite"
   steps:
     - name: Determine tag
+      id: determine
       shell: "bash"
       run: |
         TAG_NAME=$(git describe --tags --exact-match 2>/dev/null || echo ${{ inputs.default_tag }})
