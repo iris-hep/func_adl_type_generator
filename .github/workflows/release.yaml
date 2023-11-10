@@ -39,7 +39,7 @@ jobs:
         release_version: ["24.2.12", "24.2.13"]
     steps:
       - name: Build Package
-        uses: ./.github/actions/build-package
+        uses: ./.github/actions/build-types
         with:
           release_version: ${{ github.event.inputs.release_version }}
           func_adl_servicex_type_generator_version: "v1.0.0b4"
