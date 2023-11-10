@@ -60,6 +60,7 @@ runs:
     - name: Build YAML Type File
       shell: bash
       run: |
+        pip list
         atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ inputs.release_version }}
     - name: Save type yaml file to cache
       uses: actions/cache/save@v3
