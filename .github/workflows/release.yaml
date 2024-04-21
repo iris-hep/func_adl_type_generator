@@ -19,7 +19,7 @@ on:
 
 # These should be set to the latgest versions of everything.
 env:
-  func_adl_servicex_type_generator_version: "v1.0.0b10"
+  func_adl_servicex_type_generator_version: "v1.0.0b11"
   func_adl_types_atlas_version: "v1.0.0b25"
 
 jobs:
