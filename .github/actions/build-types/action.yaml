@@ -79,8 +79,9 @@ runs:
       if: ${{ inputs.push_to_pypi }}
       shell: bash
       run: |
+        export HATCH_INDEX_AUTH="${{ inputs.PYPI_TOKEN }}"
+        export HATCH_INDEX_USER="gwatts"
         pip install hatch
         cd cache/package/${{ inputs.release_version }}
         hatch build
-        export HATCH_INDEX_AUTH="gwatts:${{ inputs.PYPI_TOKEN }}"
         hatch publish
