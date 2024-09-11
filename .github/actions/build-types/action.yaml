@@ -83,4 +83,5 @@ runs:
         cd cache/package/${{ inputs.release_version }}
         hatch build
         export HATCH_INDEX_AUTH__PYPI="__token__:${{ inputs.PYPI_TOKEN }}"
+        export HATCH_INDEX_USER gwatts
         hatch publish
