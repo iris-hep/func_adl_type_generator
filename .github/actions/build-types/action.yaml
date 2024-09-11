@@ -71,7 +71,7 @@ runs:
       run: |
         atlas_release_type_builder build --command_location . --type_json ./cache/yaml --type_package ./cache/package  --package_version ${{ inputs.python_package_base_version }} ${{ inputs.release_version }}
     - name: Save Python Package
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: func_adl_xaod-${{ inputs.python_package_base_version }}-${{ inputs.release_version }}
         path: cache/package/${{ inputs.release_version }}
