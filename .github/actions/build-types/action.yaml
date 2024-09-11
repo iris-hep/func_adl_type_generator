@@ -62,7 +62,7 @@ runs:
       run: |
         atlas_release_type_builder yaml --command_location . --type_json ./cache/yaml ${{ inputs.release_version }}
     - name: Save type yaml file to cache
-      uses: actions/cache/save@v3
+      uses: actions/cache/save@v4
       with:
         path: cache/yaml
         key: ${{ steps.cache-type-yaml.outputs.cache-primary-key }}
