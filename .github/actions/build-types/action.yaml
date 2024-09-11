@@ -79,9 +79,7 @@ runs:
       if: ${{ inputs.push_to_pypi }}
       shell: bash
       run: |
-        export HATCH_INDEX_AUTH="${{ inputs.PYPI_TOKEN }}"
-        export HATCH_INDEX_USER="gwatts"
         pip install hatch
-        cd cache/package/${{ inputs.release_version }}
         hatch build
-        hatch publish
+    - name: Publish package distributions to PyPI
+      uses: pypa/gh-action-pypi-publish@release/v1
