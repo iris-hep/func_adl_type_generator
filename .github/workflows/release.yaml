@@ -56,9 +56,15 @@ jobs:
     strategy:
       matrix:
         release_version: ["21.2.231", "22.2.107"]
+        release_v_number: ["21", "22"]
+        include:
+          - release_version: "21.2.231"
+            release_v_number: "21"
+          - release_version: "22.2.107"
+            release_v_number: "22"
     environment:
       name: pypi
-      url: "https://pypi.org/p/func_adl_servicex_xaodr${{ matrix.release_version.split('.')[0] }}"
+      url: "https://pypi.org/p/func_adl_servicex_xaodr${{ matrix.release_v_number }}"
     steps:
       - name: Checkout package
         uses: actions/checkout@v2
