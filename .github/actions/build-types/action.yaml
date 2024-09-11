@@ -88,4 +88,4 @@ runs:
       if: ${{ inputs.push_to_pypi }}
       uses: pypa/gh-action-pypi-publish@release/v1
       with:
-        packages-dir: ./cache/package/${{ inputs.release_version }}
+        packages-dir: ./cache/package/${{ inputs.release_version }}/dist
