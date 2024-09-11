@@ -80,6 +80,8 @@ runs:
       shell: bash
       run: |
         pip install hatch
+        cd ./cache/package/${{ inputs.release_version }}
         hatch build
     - name: Publish package distributions to PyPI
       uses: pypa/gh-action-pypi-publish@release/v1
+      packages-dir: ./cache/package/${{ inputs.release_version }}
