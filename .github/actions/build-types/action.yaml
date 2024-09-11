@@ -75,11 +75,12 @@ runs:
       with:
         name: func_adl_xaod-${{ inputs.python_package_base_version }}-${{ inputs.release_version }}
         path: cache/package/${{ inputs.release_version }}
-    - name: Publish to PyPi with Poetry
+    - name: Publish to PyPi with Hatch
       if: ${{ inputs.push_to_pypi }}
       shell: bash
       run: |
-        pip install poetry
+        pip install hatch
         cd cache/package/${{ inputs.release_version }}
-        poetry config pypi-token.pypi ${{ inputs.PYPI_TOKEN }}
-        poetry publish --build
+        hatch build
+        export HATCH_INDEX_AUTH__PYPI="__token__:${{ inputs.PYPI_TOKEN }}"
+        hatch publish
