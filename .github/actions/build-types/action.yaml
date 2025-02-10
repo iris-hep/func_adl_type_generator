@@ -13,13 +13,6 @@ inputs:
   release_version:
     description: "Tag of ATLAS container to build the type files from"
     required: true
-  push_to_pypi:
-    description: "Push to pypi - set to true. Default is false"
-    required: false
-    default: ''
-  PYPI_TOKEN:
-    description: "Token to push to pypi"
-    required: ''
 runs:
   using: "composite"
   steps:
@@ -75,17 +68,3 @@ runs:
       with:
         name: func_adl_xaod-${{ inputs.python_package_base_version }}-${{ inputs.release_version }}
         path: cache/package/${{ inputs.release_version }}
-    - name: Publish to PyPi with Hatch
-      if: ${{ inputs.push_to_pypi }}
-      shell: bash
-      run: |
-        pip install hatch
-        cd ./cache/package/${{ inputs.release_version }}
-        hatch build
-        pwd
-        ls
-    - name: Publish package distributions to PyPI
-      if: ${{ inputs.push_to_pypi }}
-      uses: pypa/gh-action-pypi-publish@release/v1
-      with:
-        packages-dir: ./cache/package/${{ inputs.release_version }}/dist

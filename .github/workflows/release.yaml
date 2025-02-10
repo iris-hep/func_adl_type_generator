@@ -9,15 +9,10 @@ on:
         description: "Release version"
         required: true
         default: "24.2.12"
-      push_to_pypi:
-        description: "Push Final Python Package to PyPi"
-        required: true
-        type: boolean
-        default: false
   release:
     types: [created]
 
-# These should be set to the latgest versions of everything.
+# These should be set to the latest versions of everything.
 env:
   func_adl_servicex_type_generator_version: "v1.1.0"
   func_adl_types_atlas_version: "v1.1.0"
@@ -45,14 +40,12 @@ jobs:
           func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
           func_adl_types_atlas_version: $func_adl_types_atlas_version
           python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
-          push_to_pypi: ${{ github.event.inputs.push_to_pypi }}
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
   build-all-packages:
     if: ${{ github.event_name != 'workflow_dispatch' }}
     runs-on: ubuntu-latest
     permissions:
-      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing 
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
     strategy:
       matrix:
         # release_version: ["21.2.231", "22.2.107"]
@@ -82,5 +75,15 @@ jobs:
           func_adl_servicex_type_generator_version: $func_adl_servicex_type_generator_version
           func_adl_types_atlas_version: $func_adl_types_atlas_version
           python_package_base_version: "${{ steps.determine-tag.outputs.package_version }}"
-          push_to_pypi: true
-          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
+      - name: Publish to PyPi with Hatch
+        shell: bash
+        run: |
+          pip install hatch
+          cd ./cache/package/${{ matrix.release_version }}
+          hatch build
+          pwd
+          ls
+      - name: Publish package distributions to PyPI
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: ./cache/package/${{ matrix.release_version }}/dist
