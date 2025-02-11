@@ -1,8 +1,14 @@
+[build-system]
+requires = ["hatchling>=1.13.0"]
+build-backend = "hatchling.build"
+
 [project]
 name = "func_adl_type_generator"
 version = "0.1.0"
 description = "Commands for working with func_adl types"
+readme = "README.md"
 license = { text = "MIT" }
+requires-python = ">=3.8"
 authors = [{ name = "Gordon Watts <gwatts@uw.edu>" }]
 
 dependencies = ["rich"]
@@ -13,10 +19,15 @@ test = ["black", "flake8"]
 [project.scripts]
 atlas_release_type_builder = "func_adl_type_generator.atlas_release_type_builder:main"
 
-# [tool.setuptools.packages.find]
-# where = ["."] # list of folders that contain the packages (["."] by default)
-# include = [
-#     "func_adl_type_generator",
-# ] # package names should match these glob patterns (["*"] by default)
-# exclude = [] # exclude packages matching these glob patterns (empty by default)
-# namespaces = false # to disable scanning PEP 420 namespaces (true by default)
+[project.urls]
+Homepage = "https://github.com/iris-hep/func_adl_type_generator"
+
+[tool.hatch.build.targets.sdist]
+# hatchling always includes:
+# pyproject.toml, .gitignore, any README, any LICENSE, AUTHORS
+only-include = [
+    "/src",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/func_adl_type_generator"]
