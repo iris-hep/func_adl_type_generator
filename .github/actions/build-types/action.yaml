@@ -23,7 +23,7 @@ runs:
     - name: Install dependencies for Base Package
       shell: bash
       run: |
-        pip install -e .
+        python -m pip install .
     - name: Install func_adl_servicex_type_generator
       uses: actions/checkout@v4
       with:
@@ -40,10 +40,10 @@ runs:
       shell: bash
       run: |
         cd func_adl_servicex_type_generator
-        pip install -e .
+        python -m pip install .
         cd ..
         cd func-adl-types-atlas
-        pip install -e .
+        python -m pip install .
     - name: Cache Type YAML Files
       id: cache-type-yaml
       uses: actions/cache/restore@v3
