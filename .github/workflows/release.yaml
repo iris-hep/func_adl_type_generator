@@ -51,9 +51,9 @@ jobs:
         # release_version: ["21.2.231", "22.2.107"]
         # release_v_number: ["21", "22"]
         include:
-          - release_version: "21.2.231"
+          - release_version: "21.2.283"
             release_v_number: "21"
-          - release_version: "22.2.107"
+          - release_version: "22.2.113"
             release_v_number: "22"
     environment:
       name: pypi
