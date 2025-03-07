@@ -55,6 +55,8 @@ jobs:
             release_v_number: "21"
           - release_version: "22.2.113"
             release_v_number: "22"
+          - release_version: "25.2.41"
+            release_v_number: "25"
     environment:
       name: pypi
       url: "https://pypi.org/p/func_adl_servicex_xaodr${{ matrix.release_v_number }}"
