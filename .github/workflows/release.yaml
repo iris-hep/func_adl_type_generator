@@ -8,7 +8,7 @@ on:
       release_version:
         description: "Release version"
         required: true
-        default: "24.2.12"
+        default: "25.2.41"
   release:
     types: [created]
 
