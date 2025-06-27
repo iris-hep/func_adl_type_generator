@@ -15,7 +15,7 @@ on:
 # These should be set to the latest versions of everything.
 env:
   func_adl_servicex_type_generator_version: "v1.2.3"
-  func_adl_types_atlas_version: "v1.3.1"
+  func_adl_types_atlas_version: "v1.3.1b1"
 
 jobs:
   build-single-package:
