@@ -33,3 +33,12 @@ Some notes:
 
 The nice thing about the CI is it enforces a uniform, clean, and reproducible workflow for building these type files.
 
+## Releasing New Versions
+
+To release the new versions of func-adl-types-atlas and func_adl_servicex_type_generator follow these steps:
+
+1. Follow the release instructions in the repository you are updating
+2. Edit the release.yaml found in the .github folder in this repo to match the correspoding tags in the package you are updating.
+3. Run the release workflow in order to test locally that the changes made work as expected.
+4. Create a release and new tag, this with automatically update the packages on PyPi.
+
