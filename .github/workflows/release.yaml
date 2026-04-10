@@ -8,7 +8,7 @@ on:
       release_version:
         description: "Release version"
         required: true
-        default: "25.2.41"
+        default: "25.2.80"
   release:
     types: [created]
 
@@ -55,7 +55,7 @@ jobs:
             release_v_number: "21"
           - release_version: "22.2.113"
             release_v_number: "22"
-          - release_version: "25.2.41"
+          - release_version: "25.2.80"
             release_v_number: "25"
     environment:
       name: pypi
